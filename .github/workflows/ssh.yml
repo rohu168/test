@@ -18,7 +18,7 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          port: {{ secrets.PORT }}
+          port: ${{ secrets.PORT }}
           # rm: 1 # 上传前先清空目录
           # source: 'dist' # 构建结果目录
           # target: 'nginx/html/blog' # 远程服务器 nginx 目录
