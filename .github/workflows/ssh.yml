@@ -29,6 +29,6 @@ jobs:
           # strip_components: 1 # 如果不配置该参数，上传后的目录结构就是 nginx/html/blog/dist
           source: "openwrt/bin/targets/armvirt/64/bh.txt"
           target: "ccx"
-          #strip_components: 1
+          strip_components: 5
 
 
