@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
-      - name :创建文件
+      - name: 创建文件
         run: |
           mkdir -p openwrt/bin/targets/armvirt/64
           touch openwrt/bin/targets/armvirt/64/bh.txt
