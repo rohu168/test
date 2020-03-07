@@ -15,7 +15,6 @@ jobs:
       - name: 创建文件
         run: |
           mkdir -p openwrt/bin/targets/armvirt/64
-        #  touch openwrt/bin/targets/armvirt/64/bh.txt
           cp openwrt-armvirt-64-default-rootfs.tar.gz  openwrt/bin/targets/armvirt/64
 
       - name: copy file via ssh password
