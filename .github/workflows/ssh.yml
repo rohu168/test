@@ -39,6 +39,6 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          script: auto.sh
+          script: bash /root/ccx/auto.sh
 
 
