@@ -28,7 +28,7 @@ jobs:
           # source: 'dist' # 构建结果目录
           # target: 'nginx/html/blog' # 远程服务器 nginx 目录
           # strip_components: 1 # 如果不配置该参数，上传后的目录结构就是 nginx/html/blog/dist
-          source: "openwrt/bin/targets/armvirt/64/\*.tar.gz"
+          source: "openwrt/bin/targets/armvirt/64/*.tar.gz"
           target: "ccx"
           strip_components: 5
 
