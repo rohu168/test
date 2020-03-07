@@ -22,7 +22,7 @@ jobs:
           mkdir -p openwrt/bin/targets/armvirt/64
           cp openwrt-armvirt-64-default-rootfs.tar.gz  "openwrt/bin/targets/armvirt/64/"
           cd openwrt/bin/targets/*/*
-          mv openwrt-armvirt-64-default-rootfs.tar.gz  "Auto$(10#$(date +"%m%d"))v$((10#$(date +"%H")+8))-op.tar.gz"
+          mv openwrt-armvirt-64-default-rootfs.tar.gz  "Auto$((10#$(date +"%m%d")))v$((10#$(date +"%H")+8))-op.tar.gz"
 
       - name: 上传固件到N1
         if: env.UPLOAD_TO_N1 == 'true'
