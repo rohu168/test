@@ -7,7 +7,7 @@ on:
     types: [started] 
 
 env:
-  UPLOAD_TO_N1: false
+  UPLOAD_TO_N1: true
   AUTOSSH: true
 
 jobs:
