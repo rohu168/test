@@ -11,10 +11,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
+      
       - name: 创建文件
         run: |
           mkdir -p openwrt/bin/targets/armvirt/64
-          touch openwrt/bin/targets/armvirt/64/bh.txt
+        #  touch openwrt/bin/targets/armvirt/64/bh.txt
+          cp openwrt-armvirt-64-default-rootfs.tar.gz  openwrt/bin/targets/armvirt/64
 
       - name: copy file via ssh password
         uses: appleboy/scp-action@master
@@ -27,7 +29,7 @@ jobs:
           # source: 'dist' # 构建结果目录
           # target: 'nginx/html/blog' # 远程服务器 nginx 目录
           # strip_components: 1 # 如果不配置该参数，上传后的目录结构就是 nginx/html/blog/dist
-          source: "openwrt/bin/targets/armvirt/64/bh.txt"
+          source: "openwrt/bin/targets/armvirt/64/openwrt-armvirt-64-default-rootfs.tar.gz"
           target: "ccx"
           strip_components: 5
 
