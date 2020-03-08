@@ -39,7 +39,7 @@ jobs:
 
       - name: 上传文件
         env:
-          ACTIONS_DEPLOY_KEY: ${{ secrets.UPDOAD_N1 }}
+          ACTIONS_DEPLOY_KEY: ${{ secrets.UPLOAD_N1 }}
           HOST: ${{ secrets.HOST }}
           USER: root
           USERNAME: ${{ secrets.USERNAME }}
