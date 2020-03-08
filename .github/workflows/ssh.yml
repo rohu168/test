@@ -9,7 +9,7 @@ on:
 env:
   UPLOAD_TO_N1: true
   AUTOSSH: true
-  SSH_ACTIONS: false
+  SSH_ACTIONS: true
 
 jobs:
   build:
