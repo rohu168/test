@@ -26,6 +26,13 @@ jobs:
           # mv openwrt-armvirt-64-default-rootfs.tar.gz  "Auto$((10#$(date +"%m%d")))v$((10#$(date +"%H")+8))-op.tar.gz"
 
       - name: SSH connection to Actions
+        env:
+        ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+        HOST: ${{ secrets.HOST }}
+        USER: root
+        USERNAME: ${{ secrets.USERNAME }}
+        PASSWORD: ${{ secrets.PASSWORD }}
+        PORT: ${{ secrets.PORT }}
         uses: P3TERX/debugger-action@master
         if: env.SSH_ACTIONS == 'true'
 
@@ -33,7 +40,7 @@ jobs:
         env:
           ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           HOST: ${{ secrets.HOST }}
-          USER: appuser
+          USER: root
           USERNAME: ${{ secrets.USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
           PORT: ${{ secrets.PORT }}
