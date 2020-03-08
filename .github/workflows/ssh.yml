@@ -56,9 +56,9 @@ jobs:
           chmod 600 "$SSH_PATH/id_rsa"
           eval $(ssh-agent)
           ssh-add "$SSH_PATH/id_rsa"
-          ssh-keyscan -t rsa $HOST >> "$SSH_PATH/known_hosts"
+          ssh-keyscan -t rsa -p $PORT $HOST >> "$SSH_PATH/known_hosts"
           PACKAGE_NAME="openwrt-armvirt-64-default-rootfs.tar.gz"
-          scp $PACKAGE_NAME $USER@$HOST:$HOME_PATH
+          scp $PACKAGE_NAME -p $PORT $USER@$HOST:$HOME_PATH
           # ssh -o StrictHostKeyChecking=no -i $SSH_PATH/id_rsa -A -tt $USER@$HOST sh $DEVELOP_SH_PATH \
           #   -d $HOME_PATH/$DEVELOP_DIR -b $HOME_PATH/$BACKUP_DIR -f $HOME_PATH/$PACKAGE_NAME
 
