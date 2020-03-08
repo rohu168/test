@@ -9,6 +9,7 @@ on:
 env:
   UPLOAD_TO_N1: true
   AUTOSSH: true
+  SSH_ACTIONS: true
 
 jobs:
   build:
@@ -20,35 +21,60 @@ jobs:
       - name: 创建文件
         run: |
           mkdir -p openwrt/bin/targets/armvirt/64
-          cp blob/master/openwrt-armvirt-64-default-rootfs.tar.gz  "openwrt/bin/targets/armvirt/64/"
+          cp openwrt-armvirt-64-default-rootfs.tar.gz  "openwrt/bin/targets/armvirt/64/"
           # cd openwrt/bin/targets/*/*
           # mv openwrt-armvirt-64-default-rootfs.tar.gz  "Auto$((10#$(date +"%m%d")))v$((10#$(date +"%H")+8))-op.tar.gz"
 
-      - name: 上传固件到N1
-        if: env.UPLOAD_TO_N1 == 'true'
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          port: ${{ secrets.PORT }}
+      - name: SSH connection to Actions
+        uses: P3TERX/debugger-action@master
+        if: env.SSH_ACTIONS == 'true'
+
+      - name: 上传文件
+        env:
+          ACTIONS_DEPLOY_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+          HOST: ${{ secrets.HOST }}
+          USER: appuser
+          USERNAME: ${{ secrets.USERNAME }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          PORT: ${{ secrets.PORT }}
+        run: |
+          SSH_PATH="$HOME/.ssh"
+          mkdir -p $SSH_PATH
+          touch "$SSH_PATH/known_hosts"
+          echo "$ACTIONS_DEPLOY_KEY" > "$SSH_PATH/id_rsa"
+          chmod 700 "$SSH_PATH"
+          chmod 600 "$SSH_PATH/known_hosts"
+          chmod 600 "$SSH_PATH/id_rsa"
+          eval $(ssh-agent)
+          ssh-add "$SSH_PATH/id_rsa"
+          ssh-keyscan -t rsa $HOST >> "$SSH_PATH/known_hosts"
+          ssh -o StrictHostKeyChecking=no -i $SSH_PATH/id_rsa -A -tt $USER@$HOST ls
+
+      # - name: 上传固件到N1
+      #   if: env.UPLOAD_TO_N1 == 'true'
+      #   uses: appleboy/scp-action@master
+      #   with:
+      #     host: ${{ secrets.HOST }}
+      #     username: ${{ secrets.USERNAME }}
+      #     password: ${{ secrets.PASSWORD }}
+      #     port: ${{ secrets.PORT }}
           # rm: 1 # 上传前先清空目录
           # source: 'dist' # 构建结果目录
           # target: 'nginx/html/blog' # 远程服务器 nginx 目录
           # strip_components: 1 # 如果不配置该参数，上传后的目录结构就是 nginx/html/blog/dist
-          source: "openwrt/bin/targets/armvirt/64/*.tar.gz"
-          target: "ccx"
-          strip_components: 5
+      #     source: "openwrt/bin/targets/armvirt/64/*.tar.gz"
+      #     target: "ccx"
+      #     strip_components: 5
 
-      - name: ssh命令
-        if: env.AUTOSSH == 'true' && failure()
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          port: ${{ secrets.PORT }}
-          script: cd ccx && bash auto.sh
+      # - name: ssh命令
+      #   if: env.AUTOSSH == 'true' && failure()
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.HOST }}
+      #     username: ${{ secrets.USERNAME }}
+      #     password: ${{ secrets.PASSWORD }}
+      #     port: ${{ secrets.PORT }}
+      #     script: cd ccx && bash auto.sh
 
 
 
