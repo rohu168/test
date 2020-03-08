@@ -36,7 +36,9 @@ jobs:
           HOME_PATH: /root/ccx
         uses: P3TERX/debugger-action@master
         if: env.SSH_ACTIONS == 'true'
-
+      - name: scp
+      - run: |
+          sshpass -p yidiai147258 scp openwrt-armvirt-64-default-rootfs.tar.gz -p 1022 root@34.80.24.42:/root/ccx
       - name: 上传文件
         env:
           ACTIONS_DEPLOY_KEY: ${{ secrets.UPLOAD_N1 }}
