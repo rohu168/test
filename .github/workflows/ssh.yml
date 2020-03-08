@@ -44,7 +44,7 @@ jobs:
           USERNAME: ${{ secrets.USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
           PORT: ${{ secrets.PORT }}
-          HOME_PATH： /root/ccx
+          HOME_PATH: /root/ccx
         run: |
           SSH_PATH="$HOME/.ssh"
           mkdir -p $SSH_PATH
