@@ -9,7 +9,7 @@ on:
 env:
   UPLOAD_TO_N1: true
   AUTOSSH: true
-  SSH_ACTIONS: false
+  SSH_ACTIONS: true
 
 jobs:
   build:
@@ -33,6 +33,7 @@ jobs:
           USERNAME: ${{ secrets.USERNAME }}
           PASSWORD: ${{ secrets.PASSWORD }}
           PORT: ${{ secrets.PORT }}
+          HOME_PATH: /root/ccx
         uses: P3TERX/debugger-action@master
         if: env.SSH_ACTIONS == 'true'
 
