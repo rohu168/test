@@ -9,7 +9,7 @@ on:
 env:
   UPLOAD_TO_N1: true
   AUTOSSH: true
-  SSH_ACTIONS: false
+  SSH_ACTIONS: true
 
 jobs:
   build:
@@ -46,7 +46,7 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           rm: 1 # 上传前先清空目录
-          source: "openwrt/bin/targets/armvirt/64/*.tar.gz"
+          source: "openwrt/bin/targets/armvirt/64/openwrt-armvirt-64-default-rootfs.tar.gz"
           target: "ccx"
           strip_components: 5
 
