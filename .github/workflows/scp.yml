@@ -21,8 +21,8 @@ jobs:
       - name: 创建文件
         run: |
           mkdir -p openwrt/bin/targets/armvirt/64
-          echo "ccxtest000" openwrt-armvirt-64-default-rootfs.tar.gz
-          # cd openwrt/bin/targets/*/*
+          cd openwrt/bin/targets/*/*
+          echo "ccxtest000" openwrt-armvirt-64-default-rootfs.tar.gz          
           # mv openwrt-armvirt-64-default-rootfs.tar.gz  "Auto$((10#$(date +"%m%d")))v$((10#$(date +"%H")+8))-op.tar.gz"
 
       - name: SSH connection to Actions
