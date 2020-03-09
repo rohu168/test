@@ -3,7 +3,7 @@ on:
  # push:
  #   branches:
  #     - master
-  # watch:
+   watch:
   #   types: [started] 
 
 env:
