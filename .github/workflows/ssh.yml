@@ -3,8 +3,10 @@ on:
  # push:
  #   branches:
  #     - master
-   watch:
-  #   types: [started] 
+  schedule:
+    - cron: 0 18 * * *
+   # watch:
+   #   types: [started] 
 
 env:
   UPLOAD_TO_N1: true
