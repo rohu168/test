@@ -31,7 +31,7 @@ jobs:
       #     echo "::set-env name=FIRMWARENAME::openwrt/bin/targets/armvirt/64/${targz}"
 
       - name: Free up disk space
-        if: env.FREE_UP_DISK == 'true'
+        # if: env.FREE_UP_DISK == 'true'
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
