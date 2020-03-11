@@ -89,7 +89,7 @@ jobs:
           key: ${{ secrets.SCKEY }}
           # text: {消息标题}
           # desp: {消息内容 支持 MarkDown}
-          text: {kk}
+          text: {天天问上}
           deso: {更新成功！}
 
 
