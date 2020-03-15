@@ -11,6 +11,7 @@ env:
   SSH_ACTIONS: true
   AUTOSSH: true
   WECHAT: true
+  TXT: "哈哈哈"
 
 jobs:
   build:
@@ -55,58 +56,58 @@ jobs:
       #     curl -fsSL https://raw.githubusercontent.com/P3TERX/dotfiles/master/.bashrc >> ~/.bashrc
 
 
-      - name: 创建文件
-        run: |
-          mkdir -p openwrt/bin/targets/armvirt/64
-          cp arm64-r20.2.15-20200219-huge-fix-ccx.config openwrt/bin/targets/armvirt/64/ 
+      # - name: 创建文件
+      #   run: |
+      #     mkdir -p openwrt/bin/targets/armvirt/64
+      #     cp arm64-r20.2.15-20200219-huge-fix-ccx.config openwrt/bin/targets/armvirt/64/ 
 
 
-      - name: SSH connection to Actions
-        env:
-          ACTIONS_DEPLOY_KEY: ${{ secrets.UPDOAD_N1 }}
-          HOST: ${{ secrets.HOST }}
-          USER: root
-          USERNAME: ${{ secrets.USERNAME }}
-          PASSWORD: ${{ secrets.PASSWORD }}
-          PORT: ${{ secrets.PORT }}
-          HOME_PATH: /root/ccx
-        uses: P3TERX/debugger-action@master
-        if: env.SSH_ACTIONS == 'true'
+      # - name: SSH connection to Actions
+      #   env:
+      #     ACTIONS_DEPLOY_KEY: ${{ secrets.UPDOAD_N1 }}
+      #     HOST: ${{ secrets.HOST }}
+      #     USER: root
+      #     USERNAME: ${{ secrets.USERNAME }}
+      #     PASSWORD: ${{ secrets.PASSWORD }}
+      #     PORT: ${{ secrets.PORT }}
+      #     HOME_PATH: /root/ccx
+      #   uses: P3TERX/debugger-action@master
+      #   if: env.SSH_ACTIONS == 'true'
       
-      - name: 上传固件到N1
-        if: env.UPLOAD_TO_N1 == 'true'
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          port: ${{ secrets.PORT }}
-          # rm: 1 # 上传前先清空目录
-          source: "openwrt/bin/targets/armvirt/64/arm64-r20.2.15-20200219-huge-fix-ccx.config"
-          # source: "./${FIRMWARENAME}"
-          target: "ccx"
-          strip_components: 5
-
-      - name: ssh命令
-        if: env.AUTOSSH == 'true' && success() && !cancelled()
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          port: ${{ secrets.PORT }}
-          script: cd ccx && bash test.sh
-
-      # - name: Sending message
-      #   uses: yakumioto/serverchan-action@v1
+      # - name: 上传固件到N1
+      #   if: env.UPLOAD_TO_N1 == 'true'
+      #   uses: appleboy/scp-action@master
       #   with:
-      #     key: ${{ secrets.SCKEY }}
-      #     # text: {消息标题}
-      #     # desp: {消息内容 支持 MarkDown}
-      #     text: {天天问上 }
-      #     deso: {更新成功！}
+      #     host: ${{ secrets.HOST }}
+      #     username: ${{ secrets.USERNAME }}
+      #     password: ${{ secrets.PASSWORD }}
+      #     port: ${{ secrets.PORT }}
+      #     # rm: 1 # 上传前先清空目录
+      #     source: "openwrt/bin/targets/armvirt/64/arm64-r20.2.15-20200219-huge-fix-ccx.config"
+      #     # source: "./${FIRMWARENAME}"
+      #     target: "ccx"
+      #     strip_components: 5
+
+      # - name: ssh命令
+      #   if: env.AUTOSSH == 'true' && success() && !cancelled()
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.HOST }}
+      #     username: ${{ secrets.USERNAME }}
+      #     password: ${{ secrets.PASSWORD }}
+      #     port: ${{ secrets.PORT }}
+      #     script: cd ccx && bash test.sh
+
+      - name: Sending message
+        uses: yakumioto/serverchan-action@v1
+        with:
+          key: ${{ secrets.SCKEY }}
+          # text: {消息标题}
+          # desp: {消息内容 支持 MarkDown}
+          text: {天天问上 }
+          deso: {更新成功！}
       
-      - name: WeChat notification
-        if: env.WECHAT == 'true'
-        run: curl https://sc.ftqq.com/${{ secrets.SCKEY }}.send?text=自动更新N1固件成功！
+      # - name: WeChat notification
+      #   if: env.WECHAT == 'true'
+      #   run: curl https://sc.ftqq.com/${{ secrets.SCKEY }}.send?text=自动更新N1固件成功！
 
