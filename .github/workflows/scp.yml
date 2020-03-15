@@ -103,8 +103,15 @@ jobs:
         with:
           key: ${{ secrets.SCKEY }}
           text: 更新成功！
-          desp: kk:${env.TXT}
-      
+          desp: kk:${{ env.TXT }}
+
+      - name: Sending message
+        uses: yakumioto/serverchan-action@v1
+        with:
+          key: ${{ secrets.SCKEY }}
+          text: 更新成功2！
+          desp: ${{ env.TXT }}      
+          
       # - name: WeChat notification
       #   if: env.WECHAT == 'true'
       #   run: curl https://sc.ftqq.com/${{ secrets.SCKEY }}.send?text=自动更新N1固件成功！
