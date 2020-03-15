@@ -8,7 +8,7 @@ on:
 
 env:
   UPLOAD_TO_N1: true
-  SSH_ACTIONS: true
+  SSH_ACTIONS: false
   AUTOSSH: true
   WECHAT: true
   TXT: "哈哈哈"
