@@ -102,8 +102,8 @@ jobs:
         uses: yakumioto/serverchan-action@v1
         with:
           key: ${{ secrets.SCKEY }}
-          text: 消息标题
-          desp: 消息内容 支持 MarkDown
+          text: 更新成功！
+          desp: kk:${TXT}
       
       # - name: WeChat notification
       #   if: env.WECHAT == 'true'
