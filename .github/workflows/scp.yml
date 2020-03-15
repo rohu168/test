@@ -103,7 +103,7 @@ jobs:
         with:
           key: ${{ secrets.SCKEY }}
           text: 更新成功！
-          desp: kk:${TXT}
+          desp: kk:${env.TXT}
       
       # - name: WeChat notification
       #   if: env.WECHAT == 'true'
