@@ -9,8 +9,8 @@ on:
 env:
   SSH_ACTIONS: false
   UPLOAD_TO_N1: false
-  AUTORSETOP: true
-  SENDMSG: true
+  AUTORSETOP: ${{ env.UPLOAD_TO_N1 }} && true
+  SENDMSG: true 
 
 jobs:
   build:
@@ -97,9 +97,9 @@ jobs:
       #     port: ${{ secrets.PORT }}
       #     script: cd ccx && bash test.sh
       
-      - name: change
-        run: |
-          [ ${{ env.UPLOAD_TO_N1 }} == 'false' ] && env.AUTORSETOP='false'
+      # - name: change
+      #  run: |
+      #    [ ${{ env.UPLOAD_TO_N1 }} == 'false' ] && env.AUTORSETOP='false'
 
       - name: test
         if: env.AUTORSETOP == 'false' && env.SENDMSG == 'true'
