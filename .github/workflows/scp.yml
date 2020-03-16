@@ -99,7 +99,7 @@ jobs:
       
       - name: change
         run: |
-          [ ${{ UPLOAD_TO_N1 }} == 'false' ] && env.AUTORSETOP=false
+          [ ${{ env.UPLOAD_TO_N1 }} == 'false' ] && env.AUTORSETOP=false
 
       - name: test
         if: env.AUTORSETOP == 'false' && env.SENDMSG == 'true'
