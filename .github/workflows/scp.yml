@@ -9,7 +9,7 @@ on:
 env:
   SSH_ACTIONS: false
   UPLOAD_TO_N1: true
-  AUTORSETOP: ${{ env.UPLOAD_TO_N1 }} && true
+  AUTORSETOP: false
   SENDMSG: true 
 
 jobs:
