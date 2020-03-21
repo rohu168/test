@@ -8,9 +8,9 @@ on:
 
 env:
   SSH_ACTIONS: false
-  UPLOAD_TO_N1: false
-  AUTORSETOP: true
-  SENDMSG: true
+  UPLOAD_TO_N1: true
+  AUTORSETOP: ${{ env.UPLOAD_TO_N1 }} && true
+  SENDMSG: true 
 
 jobs:
   build:
@@ -99,8 +99,13 @@ jobs:
       #     script: cd ccx && bash test.sh
       
       # - name: change
+<<<<<<< HEAD
       #   run: |
       #     [ ${{ UPLOAD_TO_N1 }} == 'false' ] && env.AUTORSETOP=false
+=======
+      #  run: |
+      #    [ ${{ env.UPLOAD_TO_N1 }} == 'false' ] && env.AUTORSETOP='false'
+>>>>>>> e4436d15593e1e4d7a30e1a3ee8647fc2d0bb138
 
       # - name: test
       #   if: env.AUTORSETOP == 'false' && env.SENDMSG == 'true'
