@@ -7,7 +7,7 @@ on:
     types: started
 
 env:
-  SSH_ACTIONS: false
+  SSH_ACTIONS: true
   UPLOAD_TO_N1: true
   AUTORSETOP: false
   SENDMSG: true 
@@ -62,17 +62,17 @@ jobs:
           cd openwrt/bin/targets/*/*
           md5sum *.config > *.config.md5
 
-      # - name: SSH connection to Actions
-      #   env:
-      #     ACTIONS_DEPLOY_KEY: ${{ secrets.UPDOAD_N1 }}
-      #     HOST: ${{ secrets.HOST }}
-      #     USER: root
-      #     USERNAME: ${{ secrets.USERNAME }}
-      #     PASSWORD: ${{ secrets.PASSWORD }}
-      #     PORT: ${{ secrets.PORT }}
-      #     HOME_PATH: /root/ccx
-      #   uses: P3TERX/debugger-action@master
-      #   if: env.SSH_ACTIONS == 'true'
+      - name: SSH connection to Actions
+        env:
+          ACTIONS_DEPLOY_KEY: ${{ secrets.UPDOAD_N1 }}
+          HOST: ${{ secrets.HOST }}
+          USER: root
+          USERNAME: ${{ secrets.USERNAME }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          PORT: ${{ secrets.PORT }}
+          HOME_PATH: /root/ccx
+        uses: P3TERX/debugger-action@master
+        if: env.SSH_ACTIONS == 'true'
       
       - name: 上传固件到N1
         if: env.UPLOAD_TO_N1 == 'true'
