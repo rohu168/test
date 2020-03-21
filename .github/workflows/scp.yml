@@ -55,11 +55,12 @@ jobs:
       #     curl -fsSL https://raw.githubusercontent.com/P3TERX/dotfiles/master/.bashrc >> ~/.bashrc
 
 
-      # - name: 创建文件
-      #   run: |
-      #     mkdir -p openwrt/bin/targets/armvirt/64
-      #     cp arm64-r20.2.15-20200219-huge-fix-ccx.config openwrt/bin/targets/armvirt/64/ 
-
+      - name: 创建文件
+        run: |
+          mkdir -p openwrt/bin/targets/armvirt/64
+          cp arm64-r20.2.15-20200219-huge-fix-ccx.config openwrt/bin/targets/*/*/ 
+          cd openwrt/bin/targets/*/*
+          md5sum *.config > *.config.md5
 
       # - name: SSH connection to Actions
       #   env:
@@ -73,19 +74,19 @@ jobs:
       #   uses: P3TERX/debugger-action@master
       #   if: env.SSH_ACTIONS == 'true'
       
-      # - name: 上传固件到N1
-      #   if: env.UPLOAD_TO_N1 == 'true'
-      #   uses: appleboy/scp-action@master
-      #   with:
-      #     host: ${{ secrets.HOST }}
-      #     username: ${{ secrets.USERNAME }}
-      #     password: ${{ secrets.PASSWORD }}
-      #     port: ${{ secrets.PORT }}
-      #     # rm: 1 # 上传前先清空目录
-      #     source: "openwrt/bin/targets/armvirt/64/arm64-r20.2.15-20200219-huge-fix-ccx.config"
-      #     # source: "./${FIRMWARENAME}"
-      #     target: "ccx"
-      #     strip_components: 5
+      - name: 上传固件到N1
+        if: env.UPLOAD_TO_N1 == 'true'
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          # rm: 1 # 上传前先清空目录
+          source: "openwrt/bin/targets/*/*/*.config{,.md5}"
+          # source: "./${FIRMWARENAME}"
+          target: "ccx"
+          strip_components: 5
 
       # - name: ssh命令
       #   if: env.AUTOSSH == 'true' && success() && !cancelled()
@@ -97,23 +98,23 @@ jobs:
       #     port: ${{ secrets.PORT }}
       #     script: cd ccx && bash test.sh
       
-      - name: change
-        run: |
-          [ ${{ UPLOAD_TO_N1 }} == 'false' ] && env.AUTORSETOP=false
+      # - name: change
+      #   run: |
+      #     [ ${{ UPLOAD_TO_N1 }} == 'false' ] && env.AUTORSETOP=false
 
-      - name: test
-        if: env.AUTORSETOP == 'false' && env.SENDMSG == 'true'
-        uses: yakumioto/serverchan-action@v1
-        with:
-          key: ${{ secrets.SCKEY }}
-          text: 固件编译完成！
+      # - name: test
+      #   if: env.AUTORSETOP == 'false' && env.SENDMSG == 'true'
+      #   uses: yakumioto/serverchan-action@v1
+      #   with:
+      #     key: ${{ secrets.SCKEY }}
+      #     text: 固件编译完成！
 
-      - name: test
-        if: env.AUTORSETOP == 'true' && env.SENDMSG == 'true'
-        uses: yakumioto/serverchan-action@v1
-        with:
-          key: ${{ secrets.SCKEY }}
-          text: 固件编译没有完成！
+      # - name: test
+      #   if: env.AUTORSETOP == 'true' && env.SENDMSG == 'true'
+      #   uses: yakumioto/serverchan-action@v1
+      #   with:
+      #     key: ${{ secrets.SCKEY }}
+      #     text: 固件编译没有完成！
 
 
 
