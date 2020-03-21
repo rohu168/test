@@ -60,7 +60,7 @@ jobs:
           mkdir -p openwrt/bin/targets/armvirt/64
           cp arm64-r20.2.15-20200219-huge-fix-ccx.config openwrt/bin/targets/*/*/ 
           cd openwrt/bin/targets/*/*
-          md5sum *.config > *.config.md5
+          md5sum *.config > $(ls *.config).md5
 
       - name: SSH connection to Actions
         env:
@@ -83,8 +83,8 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           # rm: 1 # 上传前先清空目录
-          # source: "openwrt/bin/targets/armvirt/64/arm64-r20.2.15-20200219-huge-fix-ccx.config{,,.md5}"
-          source: "openwrt/bin/targets/*/*/*.config,openwrt/bin/targets/*/*/*.config.md5"
+          source: "openwrt/bin/targets/armvirt/64/*.config{,.md5}"
+          # source: "openwrt/bin/targets/*/*/*.config,openwrt/bin/targets/*/*/*.config.md5"
           # source: "./${FIRMWARENAME}"
           target: "ccx"
           strip_components: 5
