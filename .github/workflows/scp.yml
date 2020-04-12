@@ -8,8 +8,8 @@ on:
 
 env:
   SSH_ACTIONS: false
-  UPLOAD_TO_N1: true
-  AUTORSETOP: false
+  UPLOAD_TO_N1: false
+  AUTORSETOP: true
   SENDMSG: true 
 
 jobs:
@@ -55,12 +55,12 @@ jobs:
       #     curl -fsSL https://raw.githubusercontent.com/P3TERX/dotfiles/master/.bashrc >> ~/.bashrc
 
 
-      - name: 创建文件
-        run: |
-          mkdir -p openwrt/bin/targets/armvirt/64
-          cp arm64-r20.2.15-20200219-huge-fix-ccx.config openwrt/bin/targets/*/*/ 
-          cd openwrt/bin/targets/*/*
-          md5sum *.config > $(ls *.config).md5
+      # - name: 创建文件
+      #   run: |
+      #     mkdir -p openwrt/bin/targets/armvirt/64
+      #     cp arm64-r20.2.15-20200219-huge-fix-ccx.config openwrt/bin/targets/*/*/ 
+      #     cd openwrt/bin/targets/*/*
+      #     md5sum *.config > $(ls *.config).md5
 
       - name: SSH connection to Actions
         env:
@@ -89,16 +89,24 @@ jobs:
           target: "ccx"
           strip_components: 5
 
-      # - name: ssh命令
-      #   if: env.AUTOSSH == 'true' && success() && !cancelled()
-      #   uses: appleboy/ssh-action@master
-      #   with:
-      #     host: ${{ secrets.HOST }}
-      #     username: ${{ secrets.USERNAME }}
-      #     password: ${{ secrets.PASSWORD }}
-      #     port: ${{ secrets.PORT }}
-      #     script: cd ccx && bash test.sh
-      
+      - name: ssh命令
+        if: env.AUTOSSH == 'true' && success() && !cancelled()
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          envs: REPO_URL,REPO_BRANCH,CONFIG_FILE
+          script: |
+            cd test 
+            (. test.sh &)
+
+      - name: WeChat notification
+        if: env.WECHAT == 'true'
+        # run: curl https://sc.ftqq.com/${{ secrets.SCKEY }}.send?text=自动更新N1固件成功！&desp=源码:${env.REPO_URL}
+        run: curl -d "text=kkk&desp=${REPO_URL}${REPO_BRANCH}\n${CONFIG_FILE}" https://sc.ftqq.com/${{ secrets.SCKEY }}.send
+
       # - name: change
       #   run: |
       #     [ ${{ UPLOAD_TO_N1 }} == 'false' ] && env.AUTORSETOP=false
@@ -146,6 +154,7 @@ jobs:
       #     key: ${{ secrets.SCKEY }}
       #     text: 自动更新N1固件完成！
       #     desp: 源码:${{ env.REPO_URL }}
+      
 
           
 
