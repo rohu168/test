@@ -7,10 +7,20 @@ on:
     types: started
 
 env:
+  REPO_URL: https://github.com/coolsnowwolf/lede
+  REPO_BRANCH: master
+  CONFIG_FILE: seed-r20.3.19-20200405-withouDocker.config
+  DIY_SH: diy.sh
   SSH_ACTIONS: false
-  UPLOAD_TO_N1: false
+  UPLOAD_BIN_DIR: false
+  UPLOAD_FIRMWARE: true
+  UPLOAD_COWTRANSFER: false
+  UPLOAD_WETRANSFER: false
+  TZ: Asia/Shanghai
+  UPLOAD_TO_N1: true
+  # 注意设【AUTORSETOP】为true,【UPLOAD_TO_N1】也要为true
   AUTORSETOP: true
-  SENDMSG: true 
+  SENDMSG: true
 
 jobs:
   build:
@@ -19,48 +29,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
       
-      # - name: 创建文件
-      #   run: |
-      #     mkdir -p openwrt/bin/targets/armvirt/64
-      #     cp openwrt-armvirt-64-default-rootfs.tar.gz.* openwrt/bin/targets/armvirt/64
-      #     # cp openwrt-armvirt-64-default-rootfs.tar.gz openwrt/bin/targets/armvirt/64
-      #     cd openwrt/bin/targets/*/*
-      #     # targz="Auto$((10#$(date +"%m%d")))v$((10#$(date +"%H")+8))-op.tar.gz"
-      #     cat openwrt-armvirt-64-default-rootfs.tar.gz.* > openwrt-armvirt-64-default-rootfs.tar.gz
-      #     # mv openwrt-armvirt-64-default-rootfs.tar.gz  ${targz}       
-      #     echo "::set-env name=FIRMWARE::$(pwd)"
-      #     echo "::set-env name=FIRMWARENAME::openwrt/bin/targets/armvirt/64/${targz}"
-
-      # - name: Free up disk space
-      #   # if: env.FREE_UP_DISK == 'true'
-      #   env:
-      #     DEBIAN_FRONTEND: noninteractive
-      #   run: |
-      #     sudo rm -rf /usr/share/dotnet
-      #     # docker rmi `docker images -q`
-      #     sudo -E apt-get -q purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql* php*
-      #     sudo -E apt-get -qq autoremove --purge
-      #     sudo -E apt-get -qq clean
-
-      # - name: Initialization environment
-      #   env:
-      #     DEBIAN_FRONTEND: noninteractive
-      #   run: |
-      #     sudo swapoff /swapfile
-      #     sudo rm -rf /swapfile /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
-      #     # sudo -E apt-get -qq update
-      #     # sudo -E apt-get -qq install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs gcc-multilib g++-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler
-      #     sudo -E apt-get -qq autoremove --purge
-      #     sudo -E apt-get -qq clean
-      #     curl -fsSL https://raw.githubusercontent.com/P3TERX/dotfiles/master/.bashrc >> ~/.bashrc
-
-
-      # - name: 创建文件
-      #   run: |
-      #     mkdir -p openwrt/bin/targets/armvirt/64
-      #     cp arm64-r20.2.15-20200219-huge-fix-ccx.config openwrt/bin/targets/*/*/ 
-      #     cd openwrt/bin/targets/*/*
-      #     md5sum *.config > $(ls *.config).md5
 
       - name: SSH connection to Actions
         env:
@@ -89,8 +57,8 @@ jobs:
           target: "ccx"
           strip_components: 5
 
-      - name: ssh命令
-        if: env.AUTOSSH == 'true' && success() && !cancelled()
+      - name: 自动更新N1固件
+        if: env.AUTORSETOP == 'true' 
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
@@ -103,7 +71,7 @@ jobs:
             (. test.sh &)
 
       - name: WeChat notification
-        if: env.WECHAT == 'true'
+        if: env.SENDMSG == 'true'
         # run: curl https://sc.ftqq.com/${{ secrets.SCKEY }}.send?text=自动更新N1固件成功！&desp=源码:${env.REPO_URL}
         run: curl -d "text=kkk&desp=${REPO_URL}${REPO_BRANCH}\n${CONFIG_FILE}" https://sc.ftqq.com/${{ secrets.SCKEY }}.send
 
