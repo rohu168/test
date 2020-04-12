@@ -68,12 +68,13 @@ jobs:
           envs: REPO_URL,REPO_BRANCH,CONFIG_FILE
           script: |
             cd test 
+            export REPO_URL REPO_BRANCH CONFIG_FILE
             (bash test.sh &)
 
       - name: WeChat notification
         if: env.SENDMSG == 'true'
         # run: curl https://sc.ftqq.com/${{ secrets.SCKEY }}.send?text=自动更新N1固件成功！&desp=源码:${env.REPO_URL}
-        run: curl -d "text=kkk&desp=${REPO_URL}  ${REPO_BRANCH}\\n${CONFIG_FILE}" https://sc.ftqq.com/${{ secrets.SCKEY }}.send
+        run: curl -d "text=kkk&desp=${REPO_URL}\n\n${REPO_BRANCH}   \n${CONFIG_FILE}" https://sc.ftqq.com/${{ secrets.SCKEY }}.send
 
       # - name: change
       #   run: |
