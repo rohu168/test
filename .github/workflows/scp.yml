@@ -17,7 +17,7 @@ env:
   UPLOAD_COWTRANSFER: false
   UPLOAD_WETRANSFER: false
   TZ: Asia/Shanghai
-  UPLOAD_TO_N1: true
+  UPLOAD_TO_N1: false
   # 注意设【AUTORSETOP】为true,【UPLOAD_TO_N1】也要为true
   AUTORSETOP: true
   SENDMSG: true
