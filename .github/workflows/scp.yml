@@ -74,7 +74,7 @@ jobs:
       - name: WeChat notification
         if: env.SENDMSG == 'true'
         # run: curl https://sc.ftqq.com/${{ secrets.SCKEY }}.send?text=自动更新N1固件成功！&desp=源码:${env.REPO_URL}
-        run: curl -d "text=kkk&desp=${REPO_URL}\n\n${REPO_BRANCH}%0D%0A%0D%0A${CONFIG_FILE}" https://sc.ftqq.com/${{ secrets.SCKEY }}.send
+        run: curl -d "text=kkk&desp=${REPO_URL}%0D%0A%0D%0A${REPO_BRANCH}%0D%0A%0D%0A${CONFIG_FILE}" https://sc.ftqq.com/${{ secrets.SCKEY }}.send
 
       # - name: change
       #   run: |
