@@ -73,6 +73,7 @@ jobs:
 
       - name: WeChat notification
         if: env.SENDMSG == 'true'
+        shell: bash
         run: 
           if [ ${AUTORSETOP} = "true" ]; then
             curl -d "text=kkk&desp=${REPO_URL}%0D%0A%0D%0A${REPO_BRANCH}%0D%0A%0D%0A${CONFIG_FILE}" https://sc.ftqq.com/${{ secrets.SCKEY }}.send
