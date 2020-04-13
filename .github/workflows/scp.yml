@@ -19,7 +19,7 @@ env:
   TZ: Asia/Shanghai
   UPLOAD_TO_N1: false
   # 注意设【AUTORSETOP】为true,【UPLOAD_TO_N1】也要为true
-  AUTORSETOP: true
+  AUTORSETOP: false
   SENDMSG: true
 
 jobs:
@@ -73,57 +73,9 @@ jobs:
 
       - name: WeChat notification
         if: env.SENDMSG == 'true'
-        # run: curl -d "text=kkk&desp=${REPO_URL}%0D%0A%0D%0A${REPO_BRANCH}%0D%0A%0D%0A${CONFIG_FILE}" https://sc.ftqq.com/${{ secrets.SCKEY }}.send
         run: 
-          curl -d "text=${REPO_URL}%0D%0A${REPO_BRANCH}%0D%0A%0D%0A${CONFIG_FILE}" https://sc.ftqq.com/${{ secrets.SCKEY }}.send
-      # - name: change
-      #   run: |
-      #     [ ${{ UPLOAD_TO_N1 }} == 'false' ] && env.AUTORSETOP=false
-      #  run: |
-      #    [ ${{ env.UPLOAD_TO_N1 }} == 'false' ] && env.AUTORSETOP='false'
-
-
-      # - name: test
-      #   if: env.AUTORSETOP == 'false' && env.SENDMSG == 'true'
-      #   uses: yakumioto/serverchan-action@v1
-      #   with:
-      #     key: ${{ secrets.SCKEY }}
-      #     text: 固件编译完成！
-
-      # - name: test
-      #   if: env.AUTORSETOP == 'true' && env.SENDMSG == 'true'
-      #   uses: yakumioto/serverchan-action@v1
-      #   with:
-      #     key: ${{ secrets.SCKEY }}
-      #     text: 固件编译没有完成！
-
-
-
-
-      # - name: Sending message
-      #   if: env.AUTORSETOP == 'false' && env.SENDMSG == 'true'
-      #   uses: yakumioto/serverchan-action@v1
-      #   with:
-      #     key: ${{ secrets.SCKEY }}
-      #     text: 固件编译完成！
-      #     desp: 源码:${{ env.REPO_URL }}
-
-      # - name: Sending message
-      #   if: env.AUTORSETOP == 'false' && env.SENDMSG == 'true'
-      #   uses: yakumioto/serverchan-action@v1
-      #   with:
-      #     key: ${{ secrets.SCKEY }}
-      #     text: 固件上传到N1完成！
-      #     desp: 源码:${{ env.REPO_URL }}
-
-      # - name: Sending message
-      #   if: env.AUTORSETOP == 'true' && env.SENDMSG == 'true'
-      #   uses: yakumioto/serverchan-action@v1
-      #   with:
-      #     key: ${{ secrets.SCKEY }}
-      #     text: 自动更新N1固件完成！
-      #     desp: 源码:${{ env.REPO_URL }}
-      
-
-          
-
+          if [ ${AUTORSETOP} = "true" ]; then
+            curl -d "text=kkk&desp=${REPO_URL}%0D%0A%0D%0A${REPO_BRANCH}%0D%0A%0D%0A${CONFIG_FILE}" https://sc.ftqq.com/${{ secrets.SCKEY }}.send
+          else
+            curl -d "text=更新失败！" https://sc.ftqq.com/${{ secrets.SCKEY }}.send
+          fi
