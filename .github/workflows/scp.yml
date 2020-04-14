@@ -29,6 +29,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
+      - name: Get current date
+        id: kkk
+        run: |
+          echo "::set-output name=date::$(date +"%Y-%m-%d %H:%M.%S"):固件编译完成！"
     
       - name: SSH connection to Actions
         env:
@@ -41,6 +45,13 @@ jobs:
           HOME_PATH: /root/ccx
         uses: P3TERX/debugger-action@master
         if: env.SSH_ACTIONS == 'true'
+
+      - name: Get current date
+        id: mmm
+        run: |
+          str=${{steps.kkk.outputs.date}}
+          echo "::set-output name=date::${str}$(date +"%Y-%m-%d %H:%M.%S"):固件上传成功！"
+
       
       - name: 上传固件到N1
         if: env.UPLOAD_TO_N1 == 'true'
@@ -57,20 +68,29 @@ jobs:
           target: "ccx"
           strip_components: 5
 
+      # - name: Get current date
+      #   id: date
+      #   run: |
+      #     echo "::set-output name=date::$(date +'%m/%d_%Y_%H/%M')"
+      #     echo "::set-output name=date2::$(date +'%m/%d %Y')"
+
       - name: 自动更新N1固件
         if: env.AUTORSETOP == 'true' 
         uses: appleboy/ssh-action@master
+        env:
+          strmsg: ${{steps.mmm.outputs.date}}
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
-          envs: REPO_URL,REPO_BRANCH,CONFIG_FILE
+          envs: REPO_URL,REPO_BRANCH,CONFIG_FILE,strmsg
           script: |
             cd test 
-            export REPO_URL REPO_BRANCH CONFIG_FILE
-            screen -S ./test1.sh
-
+            # export REPO_URL REPO_BRANCH CONFIG_FILE
+            export strmsg
+            # (bash ./test1.sh &)
+            cat $strmsg >> kk.log
       # - name: WeChat notification
       #   if: env.SENDMSG == 'true'
       #   env:
