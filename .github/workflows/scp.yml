@@ -89,7 +89,7 @@ jobs:
             # export REPO_URL REPO_BRANCH CONFIG_FILE
             export strmsg
             # (bash ./test1.sh &)
-            cat $strmsg >> kk.log
+            echo -e $strmsg >> kk.log
       # - name: WeChat notification
       #   if: env.SENDMSG == 'true'
       #   env:
