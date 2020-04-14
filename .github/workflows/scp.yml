@@ -69,7 +69,7 @@ jobs:
           script: |
             cd test 
             export REPO_URL REPO_BRANCH CONFIG_FILE
-            (. test1.sh &)
+            nohup ./test1.sh &
 
       # - name: WeChat notification
       #   if: env.SENDMSG == 'true'
