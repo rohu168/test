@@ -87,9 +87,8 @@ jobs:
           script: |
             cd test 
             export REPO_URL REPO_BRANCH CONFIG_FILE
-            # export strmsg
             (bash test1.sh &)
-            # echo -e $strmsg >> kk.log
+            exit
       # - name: WeChat notification
       #   if: env.SENDMSG == 'true'
       #   env:
