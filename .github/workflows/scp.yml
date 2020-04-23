@@ -17,9 +17,9 @@ env:
   UPLOAD_COWTRANSFER: false
   UPLOAD_WETRANSFER: false
   TZ: Asia/Shanghai
-  UPLOAD_TO_N1: false
+  UPLOAD_TO_N1: true
   # 注意设【AUTORSETOP】为true,【UPLOAD_TO_N1】也要为true
-  AUTORSETOP: true
+  AUTORSETOP: false
   SENDMSG: true
 
 jobs:
@@ -62,10 +62,10 @@ jobs:
           port: ${{ secrets.PORT }}
           # rm: 1 # 上传前先清空目录
           # source: "openwrt/bin/targets/armvirt/64/*.config{,.md5}"
-          source: "openwrt/bin/targets/*/*/*.config,openwrt/bin/targets/*/*/*.config.md5"
+          source: "arm64-r20.2.15-20200219-huge-fix-ccx.config"
           # source: "./${FIRMWARENAME}"
           target: "ccx"
-          strip_components: 5
+          # strip_components: 1
 
       # - name: Get current date
       #   id: date
