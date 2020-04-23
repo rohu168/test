@@ -62,7 +62,7 @@ jobs:
           port: ${{ secrets.PORT }}
           # rm: 1 # 上传前先清空目录
           # source: "openwrt/bin/targets/armvirt/64/*.config{,.md5}"
-          source: "arm64-r20.2.15-20200219-huge-fix-ccx.config"
+          source: "openwrt-armvirt-64-default-rootfs.tar.gz"
           # source: "./${FIRMWARENAME}"
           target: "ccx"
           # strip_components: 1
